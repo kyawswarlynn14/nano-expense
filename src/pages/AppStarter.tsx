@@ -9,7 +9,7 @@ const AppStarter = () => {
 
     useEffect(() => {
         if(!isLogin) {
-            navigate('/', {replace: true});
+            // navigate('/', {replace: true});
         }
     }, [isLogin, navigate]);
 

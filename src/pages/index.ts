@@ -1,15 +1,17 @@
 import AppStarter from "./AppStarter";
 import AppIndex from "./AppIndex";
-import Income from "./Income";
-import Outcome from "./Outcome";
+import Incomes from "./Incomes";
+import Outcomes from "./Outcomes";
 import Report from "./Report";
+import Categories from "./Categories";
 import PageNotFound from "./PageNotFound";
 
 export {
     AppStarter,
     AppIndex,
-    Income,
-    Outcome,
+    Incomes,
+    Outcomes,
     Report,
+    Categories,
     PageNotFound,
 }
