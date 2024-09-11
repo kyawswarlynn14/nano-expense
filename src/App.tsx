@@ -3,7 +3,7 @@ import { AppIndex, AppStarter, Categories, Incomes, Outcomes, PageNotFound, Repo
 import { createContext, useContext, useState } from 'react';
 import { Toaster } from './components/ui/toaster';
 import useGetRequest from './hooks/useGetRequest';
-import { TCategory, TIncome } from './types';
+import { TCategory, TIncome, TOutcome } from './types';
 
 interface AppContextType {
   isLogin: boolean;
@@ -13,7 +13,7 @@ interface AppContextType {
   incomeLoading: boolean;
   incomes: TIncome[];
   outcomeLoading: boolean;
-  outcomes: any;
+  outcomes: TOutcome[];
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);

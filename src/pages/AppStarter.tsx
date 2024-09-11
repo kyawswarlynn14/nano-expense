@@ -9,12 +9,12 @@ const AppStarter = () => {
 
     useEffect(() => {
         if(!isLogin) {
-            // navigate('/', {replace: true});
+            navigate('/', {replace: true});
         }
     }, [isLogin, navigate]);
 
   return (
-    <div className='w-full min-h-screen bg-slate-100'>
+    <div className='w-full min-h-screen '>
         {location.pathname !== '/' && (
             <nav className='w-[80%] md:w-[60%] bg-slate-200 mx-auto shadow-lg px-4 py-2 flex justify-around rounded-lg'>
                 <NavButton title='Income' link='/income' />

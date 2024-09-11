@@ -68,7 +68,7 @@ export function CategoryForm({
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
-				<Button variant="default" onClick={() => setOpen(true)}>
+				<Button size={"sm"} variant="default" onClick={() => setOpen(true)}>
 					{isUpdate ? "Edit" : "New"}
 				</Button>
 			</DialogTrigger>

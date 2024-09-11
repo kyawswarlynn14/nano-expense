@@ -1,3 +1,4 @@
+import { useData } from "@/App";
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
@@ -7,38 +8,50 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+	Select,
+	SelectContent,
+	SelectGroup,
+	SelectItem,
+	SelectLabel,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
 import { db } from "@/lib/firebase";
-import { TIncome } from "@/types";
+import { TOutcome } from "@/types";
 import { addDoc, collection, doc, Timestamp, updateDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { DatePicker } from "./DatePicker";
 
 const initialValues = {
 	title: "",
+	category: "",
 	amount: 0,
 	remark: "",
 	createdAt: new Date(),
 	updatedAt: new Date(),
 };
 
-export default function IncomeForm({
+export default function OutcomeForm({
 	isUpdate = false,
 	item,
 }: {
 	isUpdate?: boolean;
-	item?: TIncome;
+	item?: TOutcome;
 }) {
 	const [formData, setFormData] = useState(initialValues);
 	const [loading, setLoading] = useState(false);
 	const [open, setOpen] = useState(false);
+	const { categoryLoading, categories } = useData();
 
 	useEffect(() => {
 		if (isUpdate && item) {
 			setFormData({
                 title: item.title,
+                category: item.category,
                 amount: item.amount,
                 remark: item.remark,
                 createdAt: item.createdAt instanceof Timestamp ? item.createdAt.toDate() : item.createdAt,
@@ -72,9 +85,9 @@ export default function IncomeForm({
 			return;
 		}
 		if (isUpdate && item?.id) {
-			await updateDoc(doc(db, "incomes", item.id), formData);
+			await updateDoc(doc(db, "outcomes", item.id), formData);
 		} else {
-			await addDoc(collection(db, "incomes"), formData);
+			await addDoc(collection(db, "outcomes"), formData);
 			setFormData(initialValues);
 		}
 		setLoading(false);
@@ -90,10 +103,39 @@ export default function IncomeForm({
 			</DialogTrigger>
 			<DialogContent className="sm:max-w-[425px]">
 				<DialogHeader>
-					<DialogTitle>{isUpdate ? "Edit" : "New"} Income</DialogTitle>
+					<DialogTitle>{isUpdate ? "Edit" : "New"} Outcome</DialogTitle>
 				</DialogHeader>
 
 				<div className="grid gap-4 py-4">
+					<div className="grid grid-cols-4 items-center gap-4">
+						<Label htmlFor="category" className="text-right">
+							Category
+						</Label>
+						<Select 
+                        disabled={categoryLoading} 
+                        value={formData.category}
+                        onValueChange={value => setFormData(prev => ({...prev, category: value}))}
+                        >
+							<SelectTrigger className="col-span-3">
+								<SelectValue
+									placeholder={
+										categoryLoading ? "Loading..." : "Select a category"
+									}
+								/>
+							</SelectTrigger>
+							<SelectContent>
+								<SelectGroup>
+									<SelectLabel>Categories</SelectLabel>
+									{categories.length > 0 &&
+										categories.map((i) => (
+											<SelectItem key={i.id} value={i.id}>
+												{i.title}
+											</SelectItem>
+										))}
+								</SelectGroup>
+							</SelectContent>
+						</Select>
+					</div>
 					<div className="grid grid-cols-4 items-center gap-4">
 						<Label htmlFor="title" className="text-right">
 							Title

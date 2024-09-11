@@ -11,3 +11,7 @@ export function displayDate(date: Timestamp | Date) {
 
   return format(formattedDate, "dd-MM-yyyy");
 }
+
+export const thousandSeparator = (num: number) => {
+  return new Intl.NumberFormat('en-US').format(num);
+};

@@ -15,7 +15,7 @@ export function ConfirmDialog({fn}: {fn: () => void}) {
 	return (
 		<AlertDialog>
 			<AlertDialogTrigger asChild>
-				<Button variant="destructive">Del</Button>
+				<Button size={"sm"} variant="destructive">Del</Button>
 			</AlertDialogTrigger>
 			<AlertDialogContent>
 				<AlertDialogHeader>
