@@ -2,6 +2,7 @@ import { Timestamp } from "firebase/firestore"
 
 export type TIncome = {
     id: string, 
+    userid: string,
     title: string, 
     amount: number, 
     remark: string, 
@@ -11,6 +12,7 @@ export type TIncome = {
 
 export type TOutcome = {
     id: string, 
+    userid: string,
     title: string, 
     category: string, 
     amount: number, 
@@ -21,6 +23,7 @@ export type TOutcome = {
 
 export type TCategory = {
     id: string, 
+    userid: string,
     title: string, 
     description: string,
 }

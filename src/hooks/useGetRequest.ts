@@ -1,16 +1,19 @@
-import { collection, onSnapshot, query } from "firebase/firestore";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { db } from "@/lib/firebase";
 import { toast } from "./use-toast";
 
-function useGetRequest(tableName: string) {
+function useGetRequest(tableName: string, email: string) {
 	const [data, setData] = useState<any>([]);
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
 		const onStartUp = async () => {
 			try {
-				const dataQuery = query(collection(db, tableName));
+				const dataQuery = query(
+					collection(db, tableName),
+					where("userid", "==", email)
+				);
 				const unsubscribe = onSnapshot(
 					dataQuery,
 					(querySnapshot) => {
@@ -19,7 +22,6 @@ function useGetRequest(tableName: string) {
 							id: doc.id,
 						}));
 						setData(dataArray);
-						setLoading(false);
 					}
 				);
 
@@ -29,12 +31,13 @@ function useGetRequest(tableName: string) {
 			} catch (err) {
 				console.log(err);
                 toast({variant: "destructive", description: "Something went wrong!"})
+			} finally {
 				setLoading(false);
 			}
 		};
-
+		
 		onStartUp();
-	}, []);
+	}, [email]);
 
 	return { loading, data };
 }

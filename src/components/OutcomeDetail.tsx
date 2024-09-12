@@ -10,6 +10,7 @@ import { TOutcome } from "@/types";
 import { useState } from "react";
 import { displayDate, thousandSeparator } from "@/lib/services";
 import { Label } from "./ui/label";
+import { BiDetail } from "react-icons/bi";
 
 export default function OutcomeDetail({
 	item,
@@ -21,9 +22,7 @@ export default function OutcomeDetail({
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
-				<Button size={"sm"} variant="default" onClick={() => setOpen(true)}>
-					More
-				</Button>
+				<BiDetail size={22} onClick={() => setOpen(true)} />
 			</DialogTrigger>
 			<DialogContent className="sm:max-w-[425px]">
 				<DialogHeader>

@@ -9,13 +9,13 @@ import {
 	AlertDialogTitle,
 	AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
+import { MdDelete } from "react-icons/md";
 
 export function ConfirmDialog({fn}: {fn: () => void}) {
 	return (
 		<AlertDialog>
 			<AlertDialogTrigger asChild>
-				<Button size={"sm"} variant="destructive">Del</Button>
+				<MdDelete size={22} color="red" />
 			</AlertDialogTrigger>
 			<AlertDialogContent>
 				<AlertDialogHeader>

@@ -12,23 +12,15 @@ import { useData } from "@/App";
 import { useState } from "react";
 import { Timestamp } from "firebase/firestore";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { MONTHS, YEARS } from "@/lib/services";
 
 const Report = () => {
   const date = new Date();
   const { incomes, outcomes, incomeLoading, outcomeLoading } = useData();
   const [year, setYear] = useState(date.getFullYear());
 
-  const years = [];
-  for (let i = 2020; i <= 2030; i++) {
-    years.push(i);
-  }
-
   const getMonthName = (monthIndex: number) => {
-    const months = [
-      "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-    ];
-    return months[monthIndex];
+    return MONTHS[monthIndex];
   };
 
   // Initialize months with empty arrays
@@ -64,14 +56,14 @@ const Report = () => {
   }, initializeMonthlyData());
 
   return (
-    <div className="w-[80%] mx-auto">
-      <div className="py-2">
+    <div className="w-[98%] md:w-[90%] lg:w-[80%]  mx-auto">
+      <div className="py-4">
         <Select value={year.toString()} onValueChange={(value) => setYear(parseInt(value))}>
           <SelectTrigger className="w-[150px]">
             <SelectValue placeholder="Select year" />
           </SelectTrigger>
           <SelectContent className="w-[150px]">
-            {years.map((year) => (
+            {YEARS.map((year) => (
               <SelectItem key={year} value={year.toString()}>
                 {year}
               </SelectItem>
@@ -90,7 +82,12 @@ const Report = () => {
           </TableRow>
         </TableHeader>
         {incomeLoading || outcomeLoading ? (
-          <p className="text-center font-medium py-4">Loading...</p>
+          <TableBody>
+            <TableRow>
+              <TableCell></TableCell>
+              <TableCell className="text-start font-bold py-2">Loading...</TableCell>
+            </TableRow>
+          </TableBody>
         ) : (
           <TableBody>
             {Object.keys(initializeMonthlyData()).map((month) => (

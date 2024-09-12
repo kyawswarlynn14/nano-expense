@@ -25,8 +25,11 @@ import { TOutcome } from "@/types";
 import { addDoc, collection, doc, Timestamp, updateDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { DatePicker } from "./DatePicker";
+import { FiEdit } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 
 const initialValues = {
+	userid: "",
 	title: "",
 	category: "",
 	amount: 0,
@@ -42,14 +45,25 @@ export default function OutcomeForm({
 	isUpdate?: boolean;
 	item?: TOutcome;
 }) {
+	const email = sessionStorage.getItem('email');
+	const navigate = useNavigate();
 	const [formData, setFormData] = useState(initialValues);
 	const [loading, setLoading] = useState(false);
 	const [open, setOpen] = useState(false);
 	const { categoryLoading, categories } = useData();
 
 	useEffect(() => {
+		if(email) {
+			setFormData(prev => ({...prev, userid: email}))
+		} else {
+			navigate('/', {replace: true})
+		}
+	}, [email, navigate])
+
+	useEffect(() => {
 		if (isUpdate && item) {
 			setFormData({
+				userid: item.userid,
                 title: item.title,
                 category: item.category,
                 amount: item.amount,
@@ -97,9 +111,11 @@ export default function OutcomeForm({
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
-				<Button size={"sm"} variant="default" onClick={() => setOpen(true)}>
-					{isUpdate ? "Edit" : "New"}
-				</Button>
+				{isUpdate ? (
+					<FiEdit size={22} onClick={() => setOpen(true)} />
+				) : (
+					<Button size={"sm"} variant="default" onClick={() => setOpen(true)}>New</Button>
+				)}
 			</DialogTrigger>
 			<DialogContent className="sm:max-w-[425px]">
 				<DialogHeader>

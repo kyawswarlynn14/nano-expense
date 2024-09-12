@@ -15,3 +15,13 @@ export function displayDate(date: Timestamp | Date) {
 export const thousandSeparator = (num: number) => {
   return new Intl.NumberFormat('en-US').format(num);
 };
+
+export const YEARS: number[] = [];
+for (let i = 2020; i <= 2030; i++) {
+  YEARS.push(i);
+}
+
+export const MONTHS = [
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
+];

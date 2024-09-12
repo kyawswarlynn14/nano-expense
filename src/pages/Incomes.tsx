@@ -35,16 +35,22 @@ const Incomes = () => {
     }
   };
 
-  const filteredIncomes = incomes.filter((income) => {
-    const incomeDate = income.createdAt instanceof Timestamp ? income.createdAt.toDate() : income.createdAt;
-    return incomeDate.getMonth() === month && incomeDate.getFullYear() === year;
-  });
+  const filteredIncomes = incomes
+    .filter((income) => {
+      const incomeDate = income.createdAt instanceof Timestamp ? income.createdAt.toDate() : income.createdAt;
+      return incomeDate.getMonth() === month && incomeDate.getFullYear() === year;
+    })
+    .sort((a, b) => {
+      const dateA = a.createdAt instanceof Timestamp ? a.createdAt.toDate() : a.createdAt;
+      const dateB = b.createdAt instanceof Timestamp ? b.createdAt.toDate() : b.createdAt;
+      return dateB.getTime() - dateA.getTime();
+    });
 
   const totalAmount = filteredIncomes.reduce((a, b) => a + Number(b.amount), 0)
 
   return (
-    <div className="w-[80%] mx-auto">
-      <div className="py-2 flex justify-between">
+    <div className="w-[98%] md:w-[90%] lg:w-[80%]  mx-auto">
+      <div className="py-4 flex justify-between">
         <IncomeForm />
         <MonthYearPicker month={month} setMonth={setMonth} year={year} setYear={setYear} />
       </div>
@@ -61,7 +67,13 @@ const Incomes = () => {
           </TableRow>
         </TableHeader>
         {incomeLoading ? (
-          <p className="text-center font-medium py-4">Loading...</p>
+          <TableBody>
+            <TableRow>
+              <TableCell></TableCell>
+              <TableCell></TableCell>
+              <TableCell className="text-start font-bold py-2">Loading...</TableCell>
+            </TableRow>
+          </TableBody>
         ) : (
           <TableBody>
             {filteredIncomes.map((i) => (
@@ -70,7 +82,7 @@ const Incomes = () => {
                 <TableCell>{Number(i.amount).toLocaleString()} MMK</TableCell>
                 <TableCell>{i.remark}</TableCell>
                 <TableCell>{displayDate(i.createdAt)}</TableCell>
-                <TableCell className="space-x-2 text-center">
+                <TableCell className="flex items-center justify-center gap-2">
                   <IncomeDetail item={i} />
                   <IncomeForm isUpdate={true} item={i} />
                   <ConfirmDialog fn={() => deleteIncome(i.id)} />

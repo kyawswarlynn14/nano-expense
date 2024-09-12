@@ -14,8 +14,11 @@ import { db } from "@/lib/firebase";
 import { TCategory } from "@/types";
 import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
+import { FiEdit } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 
 const initialValues = {
+	userid: "",
 	title: "",
 	description: "",
 };
@@ -27,13 +30,24 @@ export function CategoryForm({
 	isUpdate?: boolean,
 	item?: TCategory,
 }) {
+	const email = sessionStorage.getItem('email');
+	const navigate = useNavigate();
 	const [formData, setFormData] = useState(initialValues);
 	const [loading, setLoading] = useState(false);
 	const [open, setOpen] = useState(false);
 
 	useEffect(() => {
+		if(email) {
+			setFormData(prev => ({...prev, userid: email}))
+		} else {
+			navigate('/', {replace: true})
+		}
+	}, [email, navigate])
+
+	useEffect(() => {
 		if(isUpdate && item) {
 			setFormData({
+				userid: item.userid,
 				title: item.title,
 				description: item.description,
 			});
@@ -68,9 +82,11 @@ export function CategoryForm({
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
-				<Button size={"sm"} variant="default" onClick={() => setOpen(true)}>
-					{isUpdate ? "Edit" : "New"}
-				</Button>
+				{isUpdate ? (
+					<FiEdit size={22} onClick={() => setOpen(true)} />
+				) : (
+					<Button size={"sm"} variant="default" onClick={() => setOpen(true)}>New</Button>
+				)}
 			</DialogTrigger>
 			<DialogContent className="sm:max-w-[425px]">
 				<DialogHeader>

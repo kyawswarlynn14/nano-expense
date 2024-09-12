@@ -6,6 +6,8 @@ import useGetRequest from './hooks/useGetRequest';
 import { TCategory, TIncome, TOutcome } from './types';
 
 interface AppContextType {
+  email: string;
+  setEmail: React.Dispatch<React.SetStateAction<string>>;
   isLogin: boolean;
   setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
   categoryLoading: boolean;
@@ -27,12 +29,15 @@ export const useData = () => {
 
 function App() {
   const [isLogin, setIsLogin] = useState<boolean>(false);
-  const { loading: categoryLoading, data: categories} = useGetRequest("categories");
-  const { loading: incomeLoading, data: incomes} = useGetRequest("incomes");
-  const { loading: outcomeLoading, data: outcomes} = useGetRequest("outcomes");
+  const [email, setEmail] = useState<string>("");
+  const { loading: categoryLoading, data: categories} = useGetRequest("categories", email);
+  const { loading: incomeLoading, data: incomes} = useGetRequest("incomes", email);
+  const { loading: outcomeLoading, data: outcomes} = useGetRequest("outcomes", email);
 
   return (
     <AppContext.Provider value={{ 
+        email,
+        setEmail,
         isLogin, 
         setIsLogin, 
         categoryLoading, 

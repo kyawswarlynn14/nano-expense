@@ -27,7 +27,7 @@ const Categories = () => {
     }
   }
   return (
-    <div className="w-[80%] mx-auto">
+    <div className="w-[98%] md:w-[90%] lg:w-[80%]  mx-auto">
         <div className="py-4">
           <CategoryForm />
         </div>
@@ -42,14 +42,19 @@ const Categories = () => {
             </TableRow>
           </TableHeader>
           {categoryLoading ? (
-            <p className="text-center font-medium py-4">Loading...</p>
+            <TableBody>
+              <TableRow>
+                <TableCell></TableCell>
+                <TableCell className="text-start font-bold py-2">Loading...</TableCell>
+              </TableRow>
+            </TableBody>
           ) : (
             <TableBody>
               {categories.map((i) => (
                 <TableRow key={i.id}>
                   <TableCell className="font-medium">{i.title}</TableCell>
                   <TableCell>{i.description}</TableCell>
-                  <TableCell className="space-x-2 text-center">
+                  <TableCell className="flex items-center justify-center gap-2">
                     <CategoryForm isUpdate={true} item={i} />
                     <ConfirmDialog fn={() => deleteCategory(i.id)} />
                   </TableCell>
