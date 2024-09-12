@@ -7,9 +7,10 @@ import { useEffect, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 
 const AppStarter = () => {
+    const location = useLocation();
+    const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const { setEmail } = useData();
-    const navigate = useNavigate();
     const email = sessionStorage.getItem('email') || '';
     const pwd = sessionStorage.getItem('pwd') || '';
 
@@ -49,10 +50,10 @@ const AppStarter = () => {
   return (
     <div className='w-full min-h-screen '>
         {loading ? (
-            <p className='font-bold h-full flex items-center justify-center'>Checking...</p>
+            <p className='font-bold h-screen flex items-center justify-center'>Checking...</p>
         ) : (
             <>
-                {location.pathname !== '/#/' && (
+                {location.pathname !== '/' && (
                     <nav className='w-[80%] md:w-[60%] bg-slate-200 mx-auto shadow-lg px-4 py-2 flex justify-around rounded-lg'>
                         <NavButton title='Outcome' link='/outcome' />
                         <NavButton title='Income' link='/income' />
