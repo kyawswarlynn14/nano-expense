@@ -14,7 +14,7 @@ import { db } from "@/lib/firebase";
 import { TCategory } from "@/types";
 import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import { FiEdit } from "react-icons/fi";
+import { BiSolidMessageSquareEdit } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 
 const initialValues = {
@@ -83,7 +83,7 @@ export function CategoryForm({
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
 				{isUpdate ? (
-					<FiEdit size={22} onClick={() => setOpen(true)} />
+					<BiSolidMessageSquareEdit cursor={"pointer"} size={22} onClick={() => setOpen(true)} />
 				) : (
 					<Button size={"sm"} variant="default" onClick={() => setOpen(true)}>New</Button>
 				)}
@@ -94,7 +94,7 @@ export function CategoryForm({
 				</DialogHeader>
 
 				<div className="grid gap-4 py-4">
-					<div className="grid grid-cols-4 items-center gap-4">
+					<div className="input-container">
 						<Label htmlFor="title" className="text-right">
 							Title
 						</Label>
@@ -105,7 +105,7 @@ export function CategoryForm({
 							className="col-span-3"
 						/>
 					</div>
-					<div className="grid grid-cols-4 items-center gap-4">
+					<div className="input-container">
 						<Label htmlFor="description" className="text-right">
 							Description
 						</Label>

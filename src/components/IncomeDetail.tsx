@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import {
 	Dialog,
 	DialogContent,
@@ -8,9 +7,9 @@ import {
 } from "@/components/ui/dialog";
 import { TIncome } from "@/types";
 import { useState } from "react";
-import { displayDate, thousandSeparator } from "@/lib/services";
+import { displayDate } from "@/lib/services";
 import { Label } from "./ui/label";
-import { BiDetail } from "react-icons/bi";
+import { BiSolidDetail } from "react-icons/bi";
 
 export default function IncomeDetail({
 	item,
@@ -22,7 +21,7 @@ export default function IncomeDetail({
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
-				<BiDetail size={22} onClick={() => setOpen(true)} />
+				<BiSolidDetail cursor={"pointer"} size={25} onClick={() => setOpen(true)} />
 			</DialogTrigger>
 			<DialogContent className="sm:max-w-[425px]">
 				<DialogHeader>
@@ -30,7 +29,7 @@ export default function IncomeDetail({
 				</DialogHeader>
 
 				<div className="grid gap-4 py-4">
-                    <div className="grid grid-cols-4 items-center gap-4">
+                    <div className="input-container">
 						<Label htmlFor="createdAt" className="text-right">
 							Title
 						</Label>
@@ -39,16 +38,16 @@ export default function IncomeDetail({
                         </div>
 					</div>
 
-                    <div className="grid grid-cols-4 items-center gap-4">
+                    <div className="input-container">
 						<Label htmlFor="createdAt" className="text-right">
 							Amout
 						</Label>
                         <div className="col-span-3">
-                            {thousandSeparator(item.amount)} MMK
+                            {Number(item.amount).toLocaleString()} MMK
                         </div>
 					</div>
 
-                    <div className="grid grid-cols-4 items-center gap-4">
+                    <div className="input-container">
 						<Label htmlFor="createdAt" className="text-right">
 							Remark
 						</Label>
@@ -57,7 +56,7 @@ export default function IncomeDetail({
                         </div>
 					</div>
 
-                    <div className="grid grid-cols-4 items-center gap-4">
+                    <div className="input-container">
 						<Label htmlFor="createdAt" className="text-right">
 							Created At
 						</Label>
@@ -66,7 +65,7 @@ export default function IncomeDetail({
                         </div>
 					</div>
 
-                    <div className="grid grid-cols-4 items-center gap-4">
+                    <div className="input-container">
 						<Label htmlFor="createdAt" className="text-right">
 							Updated At
 						</Label>

@@ -7,14 +7,13 @@ export const getCategoryName = (categories: TCategory[], id: string) => {
 }
 
 export function displayDate(date: Timestamp | Date) {
-  const formattedDate = date instanceof Timestamp ? date.toDate() : date;
-
+  const formattedDate = changeTimestampToDate(date);
   return format(formattedDate, "dd-MM-yyyy");
 }
 
-export const thousandSeparator = (num: number) => {
-  return new Intl.NumberFormat('en-US').format(num);
-};
+export function changeTimestampToDate(date: Timestamp | Date) {
+  return date instanceof Timestamp ? date.toDate() : date;
+}
 
 export const YEARS: number[] = [];
 for (let i = 2020; i <= 2030; i++) {

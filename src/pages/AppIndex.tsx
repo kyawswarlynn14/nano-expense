@@ -2,9 +2,9 @@ import { useData } from "@/App";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
 import { db } from "@/lib/firebase";
-import { Label } from "@radix-ui/react-label";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -32,34 +32,34 @@ const AppIndex = () => {
 			toast({ variant: "destructive", description: "Invalid Password!" });
 			return;
 		}
-    setLoading(true);
-    try {
-      const q = query(
-        collection(db, "users"),
-        where("email", "==", formData.email)
-      );
-      const querySnapshot = await getDocs(q);
+    	setLoading(true);
+		try {
+		const q = query(
+			collection(db, "users"),
+			where("email", "==", formData.email)
+		);
+		const querySnapshot = await getDocs(q);
 
-      if (!querySnapshot.empty) {
-        const doc = querySnapshot.docs[0];
-        const user = doc.data();
-        if(user?.password === formData.password) {
-          sessionStorage.setItem("pwd", user?.password);
-          sessionStorage.setItem("email", user?.email);
-		  setEmail(user?.email);
-          navigate("/income", { replace: true });
-        } else {
-          toast({variant: "destructive", description: "Invalid password!"});
-        }
-      } else {
-        toast({variant: "destructive", description: "Invalid email!"});
-      }
-    } catch (error) {
-      toast({variant: "destructive", description: "Something went wrong!"});
-      console.error("Error fetching document:", error);
-    } finally {
-      setLoading(false);
-    }
+		if (!querySnapshot.empty) {
+			const doc = querySnapshot.docs[0];
+			const user = doc.data();
+			if(user?.password === formData.password) {
+				sessionStorage.setItem("pwd", user?.password);
+				sessionStorage.setItem("email", user?.email);
+				setEmail(user?.email);
+				navigate("/outcome", { replace: true });
+			} else {
+				toast({variant: "destructive", description: "Invalid password!"});
+			}
+		} else {
+				toast({variant: "destructive", description: "Invalid email!"});
+		}
+		} catch (error) {
+			toast({variant: "destructive", description: "Something went wrong!"});
+			console.error("Error fetching document:", error);
+		} finally {
+			setLoading(false);
+		}
 	};
 
 	return (

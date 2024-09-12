@@ -10,9 +10,8 @@ import {
 } from "@/components/ui/table";
 import { useData } from "@/App";
 import { useState } from "react";
-import { Timestamp } from "firebase/firestore";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { MONTHS, YEARS } from "@/lib/services";
+import { changeTimestampToDate, MONTHS, YEARS } from "@/lib/services";
 
 const Report = () => {
   const date = new Date();
@@ -31,25 +30,25 @@ const Report = () => {
   };
 
   const filteredIncomes = incomes.filter((income) => {
-    const incomeDate = income.createdAt instanceof Timestamp ? income.createdAt.toDate() : income.createdAt;
+    const incomeDate = changeTimestampToDate(income.createdAt);
     return incomeDate.getFullYear() === year;
   });
 
   const filteredOutcomes = outcomes.filter((outcome) => {
-    const outcomeDate = outcome.createdAt instanceof Timestamp ? outcome.createdAt.toDate() : outcome.createdAt;
+    const outcomeDate = changeTimestampToDate(outcome.createdAt);
     return outcomeDate.getFullYear() === year;
   });
 
   // Group data by month
   const groupedIncomes = filteredIncomes.reduce((acc: any, income) => {
-    const incomeDate = income.createdAt instanceof Timestamp ? income.createdAt.toDate() : income.createdAt;
+    const incomeDate = changeTimestampToDate(income.createdAt);
     const monthName = getMonthName(incomeDate.getMonth());
     acc[monthName].push(income);
     return acc;
   }, initializeMonthlyData());
 
   const groupedOutcomes = filteredOutcomes.reduce((acc: any, outcome) => {
-    const outcomeDate = outcome.createdAt instanceof Timestamp ? outcome.createdAt.toDate() : outcome.createdAt;
+    const outcomeDate = changeTimestampToDate(outcome.createdAt);
     const monthName = getMonthName(outcomeDate.getMonth());
     acc[monthName].push(outcome);
     return acc;

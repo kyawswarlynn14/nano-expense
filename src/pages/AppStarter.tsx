@@ -54,8 +54,8 @@ const AppStarter = () => {
             <>
                 {location.pathname !== '/' && (
                     <nav className='w-[80%] md:w-[60%] bg-slate-200 mx-auto shadow-lg px-4 py-2 flex justify-around rounded-lg'>
-                        <NavButton title='Income' link='/income' />
                         <NavButton title='Outcome' link='/outcome' />
+                        <NavButton title='Income' link='/income' />
                         <NavButton title='Report' link='/report' />
                         <NavButton title='Category' link='/categories' />
                         <Button 

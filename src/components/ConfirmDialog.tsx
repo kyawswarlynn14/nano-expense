@@ -15,7 +15,7 @@ export function ConfirmDialog({fn}: {fn: () => void}) {
 	return (
 		<AlertDialog>
 			<AlertDialogTrigger asChild>
-				<MdDelete size={22} color="red" />
+				<MdDelete cursor={"pointer"} size={22} color="red" />
 			</AlertDialogTrigger>
 			<AlertDialogContent>
 				<AlertDialogHeader>

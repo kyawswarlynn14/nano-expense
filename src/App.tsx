@@ -3,20 +3,7 @@ import { AppIndex, AppStarter, Categories, Incomes, Outcomes, PageNotFound, Repo
 import { createContext, useContext, useState } from 'react';
 import { Toaster } from './components/ui/toaster';
 import useGetRequest from './hooks/useGetRequest';
-import { TCategory, TIncome, TOutcome } from './types';
-
-interface AppContextType {
-  email: string;
-  setEmail: React.Dispatch<React.SetStateAction<string>>;
-  isLogin: boolean;
-  setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
-  categoryLoading: boolean;
-  categories: TCategory[];
-  incomeLoading: boolean;
-  incomes: TIncome[];
-  outcomeLoading: boolean;
-  outcomes: TOutcome[];
-}
+import { AppContextType } from './types';
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 export const useData = () => {
@@ -28,7 +15,6 @@ export const useData = () => {
 };
 
 function App() {
-  const [isLogin, setIsLogin] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
   const { loading: categoryLoading, data: categories} = useGetRequest("categories", email);
   const { loading: incomeLoading, data: incomes} = useGetRequest("incomes", email);
@@ -38,8 +24,6 @@ function App() {
     <AppContext.Provider value={{ 
         email,
         setEmail,
-        isLogin, 
-        setIsLogin, 
         categoryLoading, 
         categories,
         incomeLoading,

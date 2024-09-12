@@ -25,8 +25,9 @@ import { TOutcome } from "@/types";
 import { addDoc, collection, doc, Timestamp, updateDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { DatePicker } from "./DatePicker";
-import { FiEdit } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
+import { BiSolidMessageSquareEdit } from "react-icons/bi";
+import { changeTimestampToDate } from "@/lib/services";
 
 const initialValues = {
 	userid: "",
@@ -68,7 +69,7 @@ export default function OutcomeForm({
                 category: item.category,
                 amount: item.amount,
                 remark: item.remark,
-                createdAt: item.createdAt instanceof Timestamp ? item.createdAt.toDate() : item.createdAt,
+                createdAt: changeTimestampToDate(item.createdAt),
                 updatedAt: new Date(),
             });
 		}
@@ -112,7 +113,7 @@ export default function OutcomeForm({
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
 				{isUpdate ? (
-					<FiEdit size={22} onClick={() => setOpen(true)} />
+					<BiSolidMessageSquareEdit cursor={"pointer"} size={22} onClick={() => setOpen(true)} />
 				) : (
 					<Button size={"sm"} variant="default" onClick={() => setOpen(true)}>New</Button>
 				)}
@@ -123,7 +124,7 @@ export default function OutcomeForm({
 				</DialogHeader>
 
 				<div className="grid gap-4 py-4">
-					<div className="grid grid-cols-4 items-center gap-4">
+					<div className="input-container">
 						<Label htmlFor="category" className="text-right">
 							Category
 						</Label>
@@ -152,7 +153,7 @@ export default function OutcomeForm({
 							</SelectContent>
 						</Select>
 					</div>
-					<div className="grid grid-cols-4 items-center gap-4">
+					<div className="input-container">
 						<Label htmlFor="title" className="text-right">
 							Title
 						</Label>
@@ -163,7 +164,7 @@ export default function OutcomeForm({
 							className="col-span-3"
 						/>
 					</div>
-					<div className="grid grid-cols-4 items-center gap-4">
+					<div className="input-container">
 						<Label htmlFor="amount" className="text-right">
 							Amount
 						</Label>
@@ -175,7 +176,7 @@ export default function OutcomeForm({
 							className="col-span-3"
 						/>
 					</div>
-					<div className="grid grid-cols-4 items-center gap-4">
+					<div className="input-container">
 						<Label htmlFor="remark" className="text-right">
 							Remark
 						</Label>
@@ -186,7 +187,7 @@ export default function OutcomeForm({
 							className="col-span-3"
 						/>
 					</div>
-                    <div className="grid grid-cols-4 items-center gap-4">
+                    <div className="input-container">
 						<Label htmlFor="createdAt" className="text-right">
 							Created At
 						</Label>

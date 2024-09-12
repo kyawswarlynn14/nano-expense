@@ -13,7 +13,7 @@ import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { deleteDoc, doc, Timestamp } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { toast } from "@/hooks/use-toast";
-import { displayDate } from "@/lib/services";
+import { changeTimestampToDate, displayDate } from "@/lib/services";
 import IncomeForm from "@/components/IncomeForm";
 import MonthYearPicker from "@/components/MonthYearPicker";
 import { useState } from "react";
@@ -37,12 +37,12 @@ const Incomes = () => {
 
   const filteredIncomes = incomes
     .filter((income) => {
-      const incomeDate = income.createdAt instanceof Timestamp ? income.createdAt.toDate() : income.createdAt;
+      const incomeDate = changeTimestampToDate(income.createdAt);
       return incomeDate.getMonth() === month && incomeDate.getFullYear() === year;
     })
     .sort((a, b) => {
-      const dateA = a.createdAt instanceof Timestamp ? a.createdAt.toDate() : a.createdAt;
-      const dateB = b.createdAt instanceof Timestamp ? b.createdAt.toDate() : b.createdAt;
+      const dateA = changeTimestampToDate(a.createdAt);
+      const dateB = changeTimestampToDate(b.createdAt);
       return dateB.getTime() - dateA.getTime();
     });
 
@@ -50,7 +50,7 @@ const Incomes = () => {
 
   return (
     <div className="w-[98%] md:w-[90%] lg:w-[80%]  mx-auto">
-      <div className="py-4 flex justify-between">
+      <div className="py-4 flex justify-between items-center">
         <IncomeForm />
         <MonthYearPicker month={month} setMonth={setMonth} year={year} setYear={setYear} />
       </div>

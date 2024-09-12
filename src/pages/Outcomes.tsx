@@ -13,7 +13,7 @@ import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { deleteDoc, doc, Timestamp } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { toast } from "@/hooks/use-toast";
-import { displayDate, getCategoryName } from "@/lib/services";
+import { changeTimestampToDate, displayDate, getCategoryName } from "@/lib/services";
 import MonthYearPicker from "@/components/MonthYearPicker";
 import { useState } from "react";
 import OutcomeDetail from "@/components/OutcomeDetail";
@@ -37,12 +37,12 @@ const Incomes = () => {
 
   const filteredOutcomes = outcomes
     .filter((outcome) => {
-      const outcomeDate = outcome.createdAt instanceof Timestamp ? outcome.createdAt.toDate() : outcome.createdAt;
+      const outcomeDate = changeTimestampToDate(outcome.createdAt);
       return outcomeDate.getMonth() === month && outcomeDate.getFullYear() === year;
     })
     .sort((a, b) => {
-      const dateA = a.createdAt instanceof Timestamp ? a.createdAt.toDate() : a.createdAt;
-      const dateB = b.createdAt instanceof Timestamp ? b.createdAt.toDate() : b.createdAt;
+      const dateA = changeTimestampToDate(a.createdAt);
+      const dateB = changeTimestampToDate(b.createdAt);
       return dateB.getTime() - dateA.getTime();
     });
 
@@ -50,7 +50,7 @@ const Incomes = () => {
 
   return (
     <div className="w-[98%] md:w-[90%] lg:w-[80%]  mx-auto">
-      <div className="py-4 flex justify-between">
+      <div className="py-4 flex justify-between items-center">
         <OutcomeForm />
         <MonthYearPicker month={month} setMonth={setMonth} year={year} setYear={setYear} />
       </div>
