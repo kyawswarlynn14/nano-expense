@@ -49,7 +49,7 @@ const AppStarter = () => {
   return (
     <div className='w-full min-h-screen '>
         {loading ? (
-            <p className='text-center font-bold py-6'>Checking...</p>
+            <p className='font-bold h-full flex items-center justify-center'>Checking...</p>
         ) : (
             <>
                 {location.pathname !== '/#/' && (
