@@ -52,7 +52,7 @@ const AppStarter = () => {
             <p className='text-center font-bold py-6'>Checking...</p>
         ) : (
             <>
-                {location.pathname !== '/' && (
+                {location.pathname !== '/#/' && (
                     <nav className='w-[80%] md:w-[60%] bg-slate-200 mx-auto shadow-lg px-4 py-2 flex justify-around rounded-lg'>
                         <NavButton title='Outcome' link='/outcome' />
                         <NavButton title='Income' link='/income' />

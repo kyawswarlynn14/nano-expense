@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { HashRouter, Route, Routes } from 'react-router-dom'
 import { AppIndex, AppStarter, Categories, Incomes, Outcomes, PageNotFound, Report } from './pages'
 import { createContext, useContext, useState } from 'react';
 import { Toaster } from './components/ui/toaster';
@@ -32,7 +32,7 @@ function App() {
         outcomes,
       }}
     >
-      <BrowserRouter>
+      <HashRouter>
         <Routes>
           <Route path='/' element={<AppStarter />}>
             <Route path='' element={<AppIndex />} />
@@ -43,7 +43,7 @@ function App() {
             <Route path='*' element={<PageNotFound />} />
           </Route>
         </Routes>
-      </BrowserRouter>
+      </HashRouter>
       <Toaster />
     </AppContext.Provider>
   )
