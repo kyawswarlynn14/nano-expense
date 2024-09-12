@@ -12,7 +12,7 @@ import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
 import { db } from "@/lib/firebase";
 import { TIncome } from "@/types";
-import { addDoc, collection, doc, Timestamp, updateDoc } from "firebase/firestore";
+import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { DatePicker } from "./DatePicker";
 import { useNavigate } from "react-router-dom";

@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/table";
 import { useData } from "@/App";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
-import { deleteDoc, doc, Timestamp } from "firebase/firestore";
+import { deleteDoc, doc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { toast } from "@/hooks/use-toast";
 import { changeTimestampToDate, displayDate } from "@/lib/services";
