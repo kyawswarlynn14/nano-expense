@@ -25,19 +25,8 @@ import { TOutcome } from "@/types";
 import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { DatePicker } from "./DatePicker";
-import { useNavigate } from "react-router-dom";
 import { BiSolidMessageSquareEdit } from "react-icons/bi";
 import { changeTimestampToDate } from "@/lib/services";
-
-const initialValues = {
-	userid: "",
-	title: "",
-	category: "",
-	amount: 0,
-	remark: "",
-	createdAt: new Date(),
-	updatedAt: new Date(),
-};
 
 export default function OutcomeForm({
 	isUpdate = false,
@@ -46,20 +35,20 @@ export default function OutcomeForm({
 	isUpdate?: boolean;
 	item?: TOutcome;
 }) {
-	const email = sessionStorage.getItem('email');
-	const navigate = useNavigate();
+	const { email } = useData();
+	const initialValues = {
+		userid: email,
+		title: "",
+		category: "",
+		amount: 0,
+		remark: "",
+		createdAt: new Date(),
+		updatedAt: new Date(),
+	};
 	const [formData, setFormData] = useState(initialValues);
 	const [loading, setLoading] = useState(false);
 	const [open, setOpen] = useState(false);
 	const { categoryLoading, categories } = useData();
-
-	useEffect(() => {
-		if(email) {
-			setFormData(prev => ({...prev, userid: email}))
-		} else {
-			navigate('/', {replace: true})
-		}
-	}, [email, navigate])
 
 	useEffect(() => {
 		if (isUpdate && item) {

@@ -1,3 +1,4 @@
+import { useData } from "@/App";
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
@@ -15,13 +16,6 @@ import { TCategory } from "@/types";
 import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { BiSolidMessageSquareEdit } from "react-icons/bi";
-import { useNavigate } from "react-router-dom";
-
-const initialValues = {
-	userid: "",
-	title: "",
-	description: "",
-};
 
 export function CategoryForm({ 
 	isUpdate = false,
@@ -30,19 +24,15 @@ export function CategoryForm({
 	isUpdate?: boolean,
 	item?: TCategory,
 }) {
-	const email = sessionStorage.getItem('email');
-	const navigate = useNavigate();
+	const {email} = useData();
+	const initialValues = {
+		userid: email,
+		title: "",
+		description: "",
+	};
 	const [formData, setFormData] = useState(initialValues);
 	const [loading, setLoading] = useState(false);
 	const [open, setOpen] = useState(false);
-
-	useEffect(() => {
-		if(email) {
-			setFormData(prev => ({...prev, userid: email}))
-		} else {
-			navigate('/', {replace: true})
-		}
-	}, [email, navigate])
 
 	useEffect(() => {
 		if(isUpdate && item) {
