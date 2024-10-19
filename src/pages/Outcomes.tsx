@@ -21,6 +21,8 @@ import OutcomeForm from "@/components/OutcomeForm";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { TOutcome } from "@/types";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { CgMoreVerticalO } from "react-icons/cg";
 
 const Incomes = () => {
   const date = new Date();
@@ -39,8 +41,12 @@ const Incomes = () => {
         setFilteredOutcomes(outcomes);
       }
     } else {
-      const data = outcomes
-        .filter((outcome) => {
+      const data = (categoryId && categoryId !== "-") 
+      ? outcomes.filter((outcome) => {
+        const outcomeDate = changeTimestampToDate(outcome.createdAt);
+        return outcomeDate.getMonth() === month && outcomeDate.getFullYear() === year && outcome.category === categoryId;
+      })
+      : outcomes.filter((outcome) => {
           const outcomeDate = changeTimestampToDate(outcome.createdAt);
           return outcomeDate.getMonth() === month && outcomeDate.getFullYear() === year;
         });
@@ -62,39 +68,12 @@ const Incomes = () => {
 
   return (
     <div className="w-[98%] md:w-[90%] lg:w-[80%]  mx-auto">
-      <div className="py-4 flex justify-between items-center">
+      <div className="pt-4 flex justify-between items-center">
         <OutcomeForm />
-        <div className="flex items-center space-x-2">
-          {showAll ? (
-            <Select 
-              disabled={categoryLoading} 
-              value={categoryId}
-              onValueChange={value => setCategoryId(value)}
-            >
-              <SelectTrigger className="w-[150px]">
-                <SelectValue
-                  placeholder={
-                    categoryLoading ? "Loading..." : "Select a category"
-                  }
-                />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectItem value={"-"}>All</SelectItem>
-                  {categories.length > 0 &&
-                    categories.map((i) => (
-                      <SelectItem key={i.id} value={i.id}>
-                        {i.title}
-                      </SelectItem>
-                    ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          ) : (
-            <MonthYearPicker month={month} setMonth={setMonth} year={year} setYear={setYear} />
-          )}
 
+        <div className="flex items-center gap-2">
           <Checkbox id="showAll" checked={showAll} onCheckedChange={() => setShowAll(prev => !prev)} />
+
           <label
             htmlFor="showAll"
             className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -104,15 +83,44 @@ const Incomes = () => {
         </div>
       </div>
 
+      <div className="flex items-center justify-between gap-2 py-2">
+        <Select 
+            disabled={categoryLoading} 
+            value={categoryId}
+            onValueChange={value => setCategoryId(value)}
+          >
+            <SelectTrigger className="w-[100px] md:w-[150px]">
+              <SelectValue
+                placeholder={
+                  categoryLoading ? "Loading..." : "Categories"
+                }
+              />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value={"-"}>All</SelectItem>
+                {categories.length > 0 &&
+                  categories.map((i) => (
+                    <SelectItem key={i.id} value={i.id}>
+                      {i.title}
+                    </SelectItem>
+                  ))}
+              </SelectGroup>
+            </SelectContent>
+        </Select>
+
+        { !showAll && <MonthYearPicker month={month} setMonth={setMonth} year={year} setYear={setYear} />}
+      </div>
+
       <Table className="border border-slate-300 shadow-lg">
         <TableCaption>A list of outcomes.</TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[20%] font-bold">Title</TableHead>
-            <TableHead className="w-[15%] font-bold">Amount</TableHead>
-            <TableHead className="w-[20%] font-bold">Category</TableHead>
-            <TableHead className="w-{20%} font-bold">Created At</TableHead>
-            <TableHead className="w-[25%] font-bold text-center">Action</TableHead>
+            <TableHead className="w-[25%] font-bold">Title</TableHead>
+            <TableHead className="w-[23%] font-bold">Amount</TableHead>
+            <TableHead className="w-[20%] font-bold hidden md:block">Category</TableHead>
+            <TableHead className="w-[22%] font-bold">Created At</TableHead>
+            <TableHead className="w-[10%] font-bold text-center">Action</TableHead>
           </TableRow>
         </TableHeader>
         {outcomeLoading ? (
@@ -128,17 +136,22 @@ const Incomes = () => {
             {filteredOutcomes.sort((a, b) => {
               const dateA = changeTimestampToDate(a.createdAt);
               const dateB = changeTimestampToDate(b.createdAt);
-              return dateA.getTime() - dateB.getTime();
+              return dateB.getTime() - dateA.getTime();
             }).map((i) => (
               <TableRow key={i.id}>
                 <TableCell className="font-medium">{i.title}</TableCell>
                 <TableCell>{Number(i.amount).toLocaleString()} MMK</TableCell>
-                <TableCell>{getCategoryName(categories, i.category)}</TableCell>
+                <TableCell className="hidden md:block">{getCategoryName(categories, i.category)}</TableCell>
                 <TableCell>{displayDate(i.createdAt)}</TableCell>
                 <TableCell className="flex items-center justify-center gap-2">
-                  <OutcomeDetail item={i} />
-                  <OutcomeForm isUpdate={true} item={i} />
-                  <ConfirmDialog fn={() => deleteOutcome(i.id)} />
+                  <Popover>
+                    <PopoverTrigger><CgMoreVerticalO size={22} /></PopoverTrigger>
+                    <PopoverContent className="w-36 space-y-1">
+                      <OutcomeDetail item={i} />
+                      <OutcomeForm isUpdate={true} item={i} />
+                      <ConfirmDialog fn={() => deleteOutcome(i.id)} />
+                    </PopoverContent>
+                  </Popover>
                 </TableCell>
               </TableRow>
             ))}

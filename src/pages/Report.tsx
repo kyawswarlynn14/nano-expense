@@ -75,9 +75,9 @@ const Report = () => {
         <TableCaption>A list of report.</TableCaption>
         <TableHeader>
           <TableRow className="font-bold">
-            <TableHead className="w-[40%]">Month</TableHead>
-            <TableHead className="w-[30%]">Incomes</TableHead>
-            <TableHead className="w-[30%]">Outcomes</TableHead>
+            <TableHead className="w-[30%]">Month</TableHead>
+            <TableHead className="w-[35%]">Incomes</TableHead>
+            <TableHead className="w-[35%]">Outcomes</TableHead>
           </TableRow>
         </TableHeader>
         {incomeLoading || outcomeLoading ? (

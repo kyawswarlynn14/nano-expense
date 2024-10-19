@@ -19,6 +19,8 @@ import MonthYearPicker from "@/components/MonthYearPicker";
 import { useState } from "react";
 import IncomeDetail from "@/components/IncomeDetail";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { CgMoreVerticalO } from "react-icons/cg";
 
 const Incomes = () => {
   const date = new Date();
@@ -73,11 +75,11 @@ const Incomes = () => {
         <TableCaption>A list of incomes.</TableCaption>
         <TableHeader>
           <TableRow className="font-bold">
-            <TableHead className="w-[20%]">Title</TableHead>
-            <TableHead className="w-[15%]">Amount</TableHead>
-            <TableHead className="w-[30%]">Remark</TableHead>
-            <TableHead className="w-{15%}">Created At</TableHead>
-            <TableHead className="w-[20%] text-center">Action</TableHead>
+            <TableHead className="w-[25%]">Title</TableHead>
+            <TableHead className="w-[25%]">Amount</TableHead>
+            <TableHead className="w-[25%] hidden md:block">Remark</TableHead>
+            <TableHead className="w-[25%] md:w-[20%]">Created At</TableHead>
+            <TableHead className="w-[10%] text-center">Action</TableHead>
           </TableRow>
         </TableHeader>
         {incomeLoading ? (
@@ -94,12 +96,17 @@ const Incomes = () => {
               <TableRow key={i.id}>
                 <TableCell className="font-medium">{i.title}</TableCell>
                 <TableCell>{Number(i.amount).toLocaleString()} MMK</TableCell>
-                <TableCell>{i.remark}</TableCell>
+                <TableCell className="hidden md:block">{i.remark}</TableCell>
                 <TableCell>{displayDate(i.createdAt)}</TableCell>
-                <TableCell className="flex items-center justify-center gap-2">
-                  <IncomeDetail item={i} />
-                  <IncomeForm isUpdate={true} item={i} />
-                  <ConfirmDialog fn={() => deleteIncome(i.id)} />
+                <TableCell className="flex items-center justify-center">
+                  <Popover>
+                    <PopoverTrigger><CgMoreVerticalO size={22} /></PopoverTrigger>
+                    <PopoverContent className="w-36 space-y-1">
+                      <IncomeDetail item={i} />
+                      <IncomeForm isUpdate={true} item={i} />
+                      <ConfirmDialog fn={() => deleteIncome(i.id)} />
+                    </PopoverContent>
+                  </Popover>
                 </TableCell>
               </TableRow>
             ))}

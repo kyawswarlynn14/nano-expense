@@ -13,6 +13,8 @@ import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { deleteDoc, doc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { toast } from "@/hooks/use-toast";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { CgMoreVerticalO } from "react-icons/cg";
 
 const Categories = () => {
   const { categoryLoading, categories } = useData();
@@ -33,12 +35,12 @@ const Categories = () => {
         </div>
         
         <Table className="border">
-          <TableCaption>A list of categories.</TableCaption>
+          <TableCaption>A list of expense categories.</TableCaption>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-1/3 font-bold">Title</TableHead>
-              <TableHead className="w-1/3 font-bold">Description</TableHead>
-              <TableHead className="w-1/3 font-bold text-center">Action</TableHead>
+              <TableHead className="w-[35%] font-bold">Title</TableHead>
+              <TableHead className="w-[35%] font-bold">Description</TableHead>
+              <TableHead className="w-[15%] font-bold text-center">Action</TableHead>
             </TableRow>
           </TableHeader>
           {categoryLoading ? (
@@ -55,8 +57,13 @@ const Categories = () => {
                   <TableCell className="font-medium">{i.title}</TableCell>
                   <TableCell>{i.description}</TableCell>
                   <TableCell className="flex items-center justify-center gap-2">
-                    <CategoryForm isUpdate={true} item={i} />
-                    <ConfirmDialog fn={() => deleteCategory(i.id)} />
+                    <Popover>
+                      <PopoverTrigger><CgMoreVerticalO size={22} /></PopoverTrigger>
+                      <PopoverContent className="w-36 space-y-1">
+                        <CategoryForm isUpdate={true} item={i} />
+                        <ConfirmDialog fn={() => deleteCategory(i.id)} />
+                      </PopoverContent>
+                    </Popover>
                   </TableCell>
                 </TableRow>
               ))}

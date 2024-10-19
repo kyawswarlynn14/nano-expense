@@ -10,14 +10,18 @@ import {
 	AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { MdDelete } from "react-icons/md";
+import { Button } from "./ui/button";
 
 export function ConfirmDialog({fn}: {fn: () => void}) {
 	return (
 		<AlertDialog>
 			<AlertDialogTrigger asChild>
-				<MdDelete cursor={"pointer"} size={22} color="red" />
+				<Button className="w-full flex justify-between items-center gap-2">
+					<span>Delete</span>
+					<MdDelete cursor={"pointer"} size={22} color="red" />
+				</Button>
 			</AlertDialogTrigger>
-			<AlertDialogContent>
+			<AlertDialogContent className="w-[90%] rounded-lg sm:max-w-[425px]">
 				<AlertDialogHeader>
 					<AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
 					<AlertDialogDescription>

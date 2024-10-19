@@ -64,7 +64,7 @@ const AppIndex = () => {
 
 	return (
 		<div className="w-full min-h-screen flex items-center justify-center">
-			<Card className="w-full max-w-md mx-auto">
+			<Card className="w-[90%] max-w-sm mx-auto">
 				<CardHeader>
 					<CardTitle className="text-center font-bold text-xl">Login</CardTitle>
 				</CardHeader>

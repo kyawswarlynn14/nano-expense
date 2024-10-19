@@ -10,6 +10,7 @@ import { useState } from "react";
 import { displayDate } from "@/lib/services";
 import { Label } from "./ui/label";
 import { BiSolidDetail } from "react-icons/bi";
+import { Button } from "./ui/button";
 
 export default function IncomeDetail({
 	item,
@@ -21,9 +22,12 @@ export default function IncomeDetail({
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
-				<BiSolidDetail cursor={"pointer"} size={25} onClick={() => setOpen(true)} />
+				<Button onClick={() => setOpen(true)} className="w-full flex justify-between items-center gap-2">
+					<span>Details</span>
+					<BiSolidDetail cursor={"pointer"} size={25} />
+				</Button>
 			</DialogTrigger>
-			<DialogContent className="sm:max-w-[425px]">
+			<DialogContent className="w-[90%] rounded-lg sm:max-w-[425px]">
 				<DialogHeader>
 					<DialogTitle>Income Detail</DialogTitle>
 				</DialogHeader>

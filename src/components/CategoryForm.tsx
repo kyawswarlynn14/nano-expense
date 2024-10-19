@@ -73,12 +73,15 @@ export function CategoryForm({
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
 				{isUpdate ? (
-					<BiSolidMessageSquareEdit cursor={"pointer"} size={22} onClick={() => setOpen(true)} />
+					<Button onClick={() => setOpen(true)} className="w-full flex justify-between items-center gap-2">
+						<span>Edit</span>
+						<BiSolidMessageSquareEdit cursor={"pointer"} size={22} />
+					</Button>
 				) : (
 					<Button size={"sm"} variant="default" onClick={() => setOpen(true)}>New</Button>
 				)}
 			</DialogTrigger>
-			<DialogContent className="sm:max-w-[425px]">
+			<DialogContent className="w-[90%] rounded-lg sm:max-w-[425px]">
 				<DialogHeader>
 					<DialogTitle>{isUpdate ? "Edit" : "New"} Category</DialogTitle>
 				</DialogHeader>

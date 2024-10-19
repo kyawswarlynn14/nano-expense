@@ -17,7 +17,7 @@ const MonthYearPicker = ({
     <div className="flex space-x-2">
       {/* Month Selector */}
       <Select value={MONTHS[month]} onValueChange={(value) => setMonth(MONTHS.indexOf(value))}>
-        <SelectTrigger className="w-[150px]">
+        <SelectTrigger className="w-[100px] md:w-[150px]">
           <SelectValue placeholder="Select month" />
         </SelectTrigger>
         <SelectContent className="w-[150px]">
@@ -31,7 +31,7 @@ const MonthYearPicker = ({
 
       {/* Year Selector */}
       <Select value={year.toString()} onValueChange={(value) => setYear(parseInt(value))}>
-        <SelectTrigger className="w-[150px]">
+        <SelectTrigger className="w-[100px] md:w-[150px]">
           <SelectValue placeholder="Select year" />
         </SelectTrigger>
         <SelectContent className="w-[150px]">
