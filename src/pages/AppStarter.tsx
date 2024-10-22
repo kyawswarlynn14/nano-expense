@@ -1,50 +1,53 @@
 import { useData } from "@/App";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
-import { db } from "@/lib/firebase";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { auth } from "@/lib/firebase";
 import { useEffect, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { FaArrowsDownToLine, FaTableList } from "react-icons/fa6";
 import { GiExpense } from "react-icons/gi";
 import { BiSolidCategory } from "react-icons/bi";
 import { IoLogOut } from "react-icons/io5";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 
 const AppStarter = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
+	const { user, setUser } = useData();
 	const [loading, setLoading] = useState(true);
-	const { setEmail } = useData();
-	const email = sessionStorage.getItem("email") || "";
-	const pwd = sessionStorage.getItem("pwd") || "";
+
+	useEffect(()=>{
+        onAuthStateChanged(auth, (user: any) => {
+            if (user) {
+				setUser({
+					uid: user?.uid,
+					name: user?.displayName,
+					email: user?.email,
+					accessToken: user?.accessToken || ''
+				})
+            } else {
+				navigate('/', { replace: true })
+              	console.log("user is logged out")
+            }
+			setLoading(false);
+          });
+    }, []);
 
 	useEffect(() => {
-		const starter = async () => {
-			try {
-				const q = query(collection(db, "users"), where("email", "==", email));
-				const querySnapshot = await getDocs(q);
+		if(!loading && !user?.accessToken) {
+			navigate('/', { replace: true })
+		}
+	}, [user, loading, navigate])
 
-				if (!querySnapshot.empty) {
-					const doc = querySnapshot.docs[0];
-					const user = doc.data();
-					if (user?.password !== pwd) {
-						navigate("/", { replace: true });
-					} else {
-						setEmail(user?.email);
-					}
-				} else {
-					navigate("/", { replace: true });
-				}
-			} catch (error) {
-				toast({ variant: "destructive", description: "Something went wrong!" });
-				navigate("/", { replace: true });
-				console.error("Error fetching document:", error);
-			} finally {
-				setLoading(false);
-			}
-		};
-		starter();
-	}, [email]);
+	const handleSignout = () => {
+		signOut(auth).then(() => {
+			toast({ variant: "default", description: "Sign out successfully!" });
+			setUser(undefined);
+			navigate("/", { replace: true });
+		}).catch((error) => {
+			toast({ variant: "destructive", description: error?.message ||"Something went wrong!" });
+		});
+	}
 
 	return (
 		<div className="w-full min-h-screen ">
@@ -78,14 +81,11 @@ const AppStarter = () => {
 							/>
 							<Button
 								variant={"outline"}
-								onClick={() => {
-									sessionStorage.clear();
-									window.location.reload();
-								}}
-                                className="flex items-center gap-2"
+								onClick={handleSignout}
+								className="flex items-center gap-2"
 							>
 								<span className="hidden md:block">Logout</span>
-                                <IoLogOut />
+								<IoLogOut />
 							</Button>
 						</nav>
 					)}

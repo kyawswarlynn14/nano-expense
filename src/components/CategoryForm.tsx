@@ -16,6 +16,7 @@ import { TCategory } from "@/types";
 import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { BiSolidMessageSquareEdit } from "react-icons/bi";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "./ui/select";
 
 export function CategoryForm({ 
 	isUpdate = false,
@@ -24,10 +25,11 @@ export function CategoryForm({
 	isUpdate?: boolean,
 	item?: TCategory,
 }) {
-	const {email} = useData();
+	const { user } = useData();
 	const initialValues = {
-		userid: email,
+		userid: user?.email,
 		title: "",
+		type: "",
 		description: "",
 	};
 	const [formData, setFormData] = useState(initialValues);
@@ -38,6 +40,7 @@ export function CategoryForm({
 		if(isUpdate && item) {
 			setFormData({
 				userid: item.userid,
+				type: item?.type,
 				title: item.title,
 				description: item.description,
 			});
@@ -97,6 +100,32 @@ export function CategoryForm({
 							onChange={handleChange}
 							className="col-span-3"
 						/>
+					</div>
+					<div className="input-container">
+						<Label htmlFor="type" className="text-right">
+							Type
+						</Label>
+						<Select 
+                        value={formData.type}
+                        onValueChange={value => setFormData(prev => ({...prev, type: value}))}
+                        >
+							<SelectTrigger className="col-span-3">
+								<SelectValue
+									placeholder={"Select a type"}
+								/>
+							</SelectTrigger>
+							<SelectContent>
+								<SelectGroup>
+									<SelectLabel>Types</SelectLabel>
+										<SelectItem value={"001"}>
+											Income
+										</SelectItem>
+										<SelectItem value={"002"}>
+											Outcome
+										</SelectItem>
+								</SelectGroup>
+							</SelectContent>
+						</Select>
 					</div>
 					<div className="input-container">
 						<Label htmlFor="description" className="text-right">

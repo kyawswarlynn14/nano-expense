@@ -1,10 +1,18 @@
 import { Timestamp } from "firebase/firestore"
 import React from "react";
 
+export type TUser = {
+    uid: string,
+    name?: string,
+    email: string,
+    accessToken: string,
+}
+
 export type TIncome = {
     id: string, 
     userid: string,
     title: string, 
+    category: string,
     amount: number, 
     remark: string, 
     createdAt: Date | Timestamp,
@@ -25,13 +33,14 @@ export type TOutcome = {
 export type TCategory = {
     id: string, 
     userid: string,
+    type: string,
     title: string, 
     description: string,
 }
 
 export interface AppContextType {
-    email: string;
-    setEmail: React.Dispatch<React.SetStateAction<string>>;
+    user: TUser | undefined;
+    setUser: React.Dispatch<React.SetStateAction<TUser | undefined>>;
     categoryLoading: boolean;
     categories: TCategory[];
     incomeLoading: boolean;

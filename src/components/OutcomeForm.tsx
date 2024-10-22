@@ -35,9 +35,9 @@ export default function OutcomeForm({
 	isUpdate?: boolean;
 	item?: TOutcome;
 }) {
-	const { email } = useData();
+	const { user } = useData();
 	const initialValues = {
-		userid: email,
+		userid: user?.email,
 		title: "",
 		category: "",
 		amount: 0,
@@ -136,7 +136,7 @@ export default function OutcomeForm({
 								<SelectGroup>
 									<SelectLabel>Categories</SelectLabel>
 									{categories.length > 0 &&
-										categories.map((i) => (
+										categories.filter(c => c.type === '002').map((i) => (
 											<SelectItem key={i.id} value={i.id}>
 												{i.title}
 											</SelectItem>

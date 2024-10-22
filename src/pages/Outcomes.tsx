@@ -100,7 +100,7 @@ const Incomes = () => {
               <SelectGroup>
                 <SelectItem value={"-"}>All</SelectItem>
                 {categories.length > 0 &&
-                  categories.map((i) => (
+                  categories.filter(c => c.type === '002').map((i) => (
                     <SelectItem key={i.id} value={i.id}>
                       {i.title}
                     </SelectItem>
@@ -146,7 +146,7 @@ const Incomes = () => {
                 <TableCell className="flex items-center justify-center gap-2">
                   <Popover>
                     <PopoverTrigger><CgMoreVerticalO size={22} /></PopoverTrigger>
-                    <PopoverContent className="w-36 space-y-1">
+                    <PopoverContent side="left" align="start" className="w-36 space-y-1">
                       <OutcomeDetail item={i} />
                       <OutcomeForm isUpdate={true} item={i} />
                       <ConfirmDialog fn={() => deleteOutcome(i.id)} />

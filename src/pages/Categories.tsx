@@ -38,9 +38,10 @@ const Categories = () => {
           <TableCaption>A list of expense categories.</TableCaption>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[35%] font-bold">Title</TableHead>
-              <TableHead className="w-[35%] font-bold">Description</TableHead>
-              <TableHead className="w-[15%] font-bold text-center">Action</TableHead>
+              <TableHead className="w-[30%] font-bold">Title</TableHead>
+              <TableHead className="w-[20%] font-bold">Type</TableHead>
+              <TableHead className="w-[40%] font-bold">Description</TableHead>
+              <TableHead className="w-[10%] font-bold text-center">Action</TableHead>
             </TableRow>
           </TableHeader>
           {categoryLoading ? (
@@ -55,11 +56,14 @@ const Categories = () => {
               {categories.map((i) => (
                 <TableRow key={i.id}>
                   <TableCell className="font-medium">{i.title}</TableCell>
+                  <TableCell className="font-medium">
+                    {i?.type === '001' ? "Income" : i?.type === '002' ? "Outcome" : "Unknown"}
+                  </TableCell>
                   <TableCell>{i.description}</TableCell>
                   <TableCell className="flex items-center justify-center gap-2">
                     <Popover>
                       <PopoverTrigger><CgMoreVerticalO size={22} /></PopoverTrigger>
-                      <PopoverContent className="w-36 space-y-1">
+                      <PopoverContent side="left" align="start" className="w-36 space-y-1">
                         <CategoryForm isUpdate={true} item={i} />
                         <ConfirmDialog fn={() => deleteCategory(i.id)} />
                       </PopoverContent>

@@ -18,6 +18,7 @@ import { DatePicker } from "./DatePicker";
 import { BiSolidMessageSquareEdit } from "react-icons/bi";
 import { changeTimestampToDate } from "@/lib/services";
 import { useData } from "@/App";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "./ui/select";
 
 export default function IncomeForm({
 	isUpdate = false,
@@ -26,10 +27,11 @@ export default function IncomeForm({
 	isUpdate?: boolean;
 	item?: TIncome;
 }) {
-	const { email } = useData();
+	const { user, categoryLoading, categories } = useData();
 	const initialValues = {
-		userid: email,
+		userid: user?.email,
 		title: "",
+		category: "",
 		amount: 0,
 		remark: "",
 		createdAt: new Date(),
@@ -44,6 +46,7 @@ export default function IncomeForm({
 			setFormData({
 				userid: item.userid,
                 title: item.title,
+				category: item?.category,
                 amount: item.amount,
                 remark: item.remark,
                 createdAt: changeTimestampToDate(item.createdAt),
@@ -104,6 +107,35 @@ export default function IncomeForm({
 				</DialogHeader>
 
 				<div className="grid gap-4 py-4">
+				<div className="input-container">
+						<Label htmlFor="category" className="text-right">
+							Category
+						</Label>
+						<Select 
+                        disabled={categoryLoading} 
+                        value={formData.category}
+                        onValueChange={value => setFormData(prev => ({...prev, category: value}))}
+                        >
+							<SelectTrigger className="col-span-3">
+								<SelectValue
+									placeholder={
+										categoryLoading ? "Loading..." : "Select a category"
+									}
+								/>
+							</SelectTrigger>
+							<SelectContent>
+								<SelectGroup>
+									<SelectLabel>Categories</SelectLabel>
+									{categories.length > 0 &&
+										categories.filter(c => c.type === '001').map((i) => (
+											<SelectItem key={i.id} value={i.id}>
+												{i.title}
+											</SelectItem>
+										))}
+								</SelectGroup>
+							</SelectContent>
+						</Select>
+					</div>
 					<div className="input-container">
 						<Label htmlFor="title" className="text-right">
 							Title

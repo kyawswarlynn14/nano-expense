@@ -2,8 +2,8 @@ import { HashRouter, Route, Routes } from 'react-router-dom'
 import { AppIndex, AppStarter, Categories, Incomes, Outcomes, PageNotFound, Report } from './pages'
 import { createContext, useContext, useState } from 'react';
 import { Toaster } from './components/ui/toaster';
+import { AppContextType, TUser } from './types';
 import useGetRequest from './hooks/useGetRequest';
-import { AppContextType } from './types';
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 export const useData = () => {
@@ -15,23 +15,24 @@ export const useData = () => {
 };
 
 function App() {
-  const [email, setEmail] = useState<string>("");
-  const { loading: categoryLoading, data: categories} = useGetRequest("categories", email);
-  const { loading: incomeLoading, data: incomes} = useGetRequest("incomes", email);
-  const { loading: outcomeLoading, data: outcomes} = useGetRequest("outcomes", email);
+  const [user, setUser] = useState<TUser | undefined>(undefined);
+  const { loading: categoryLoading, data: categories} = useGetRequest("categories", user?.email || '');
+  const { loading: incomeLoading, data: incomes} = useGetRequest("incomes", user?.email || '');
+  const { loading: outcomeLoading, data: outcomes} = useGetRequest("outcomes", user?.email || '');
+
+  const contextData: AppContextType = {
+    user,
+    setUser,
+    categoryLoading,
+    incomeLoading,
+    outcomeLoading,
+    categories,
+    incomes,
+    outcomes,
+  }
 
   return (
-    <AppContext.Provider value={{ 
-        email,
-        setEmail,
-        categoryLoading, 
-        categories,
-        incomeLoading,
-        incomes,
-        outcomeLoading,
-        outcomes,
-      }}
-    >
+    <AppContext.Provider value={contextData} >
       <HashRouter>
         <Routes>
           <Route path='/' element={<AppStarter />}>
